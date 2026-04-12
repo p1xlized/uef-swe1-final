@@ -1,1 +1,7 @@
-.env
+# Ignore environment variables, except for .env-template
+.env*
+!.env-template
+
+# Ignore transpilation output
+**/*.js
+**/*.d.ts
