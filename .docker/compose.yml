@@ -1,0 +1,24 @@
+services:
+  database:
+    container_name: app_db
+    image: mysql:8
+    environment:
+      - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASS}
+      - MYSQL_USER=${DB_USER}
+      - MYSQL_PASSWORD=${DB_PASSWORD}
+      - MYSQL_DATABASE=${DB_SCHEMA_NAME}
+    ports:
+      - "3306:${DB_HOST_PORT}"
+      - "33060:${DB_HOST_SECURE_PORT}"
+    volumes:
+      - db_data:/var/lib/mysql
+    networks:
+      - app
+
+networks:
+  app:
+    driver: local
+
+volumes:
+  db_data:
+    driver: local
