@@ -5,6 +5,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import v1 from "./routes/v1.router";
+import db from "./database";
+import {test} from "./models/schema";
 
 const app = express();
 
@@ -25,4 +27,5 @@ app.all('/{*splat}', async (req: Request, res: Response) => {
 
 app.listen(process.env.PORT || 3306, () => {
     console.error(`Fuck you. It's alive`);
+    console.log(db.select().from(test));
 });
