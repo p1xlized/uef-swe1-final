@@ -30,4 +30,6 @@ devenv.local.yaml
 
 # Editors
 .idea
-**/.vs*
+.vs*/*
+# To hide build outputs (JS/JSX) in editor
+!.vscode/settings.json
