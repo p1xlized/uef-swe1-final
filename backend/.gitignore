@@ -1,7 +1,11 @@
 # Ignore environment variables, except for .env-template
-.env*
+.env
 !.env-template
 
 # Ignore transpilation output
 **/*.js
 **/*.d.ts
+
+# Ignore migration data and assets
+drizzle/*
+auth-schema.ts

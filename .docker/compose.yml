@@ -17,7 +17,7 @@ services:
 
 networks:
   app:
-    driver: local
+    driver: bridge
 
 volumes:
   db_data:

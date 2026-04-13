@@ -5,8 +5,8 @@ import bodyParser from 'body-parser';
 import cors from 'cors';
 import helmet from 'helmet';
 import v1 from "./routes/v1.router";
-import db from "./database";
-import {test} from "./models/schema";
+import {auth} from "./lib/auth";
+import {toNodeHandler} from "better-auth/node";
 
 const app = express();
 
@@ -16,6 +16,8 @@ app.use(cors());
 app.use(helmet());
 
 app.use('/api/v1', v1);
+
+app.all("/api/auth/{*any}", toNodeHandler(auth));
 
 app.all('/{*splat}', async (req: Request, res: Response) => {
     res.status(404).send({
@@ -27,5 +29,4 @@ app.all('/{*splat}', async (req: Request, res: Response) => {
 
 app.listen(process.env.PORT || 3306, () => {
     console.error(`Fuck you. It's alive`);
-    console.log(db.select().from(test));
 });
