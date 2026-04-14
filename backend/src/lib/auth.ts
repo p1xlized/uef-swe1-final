@@ -3,9 +3,14 @@ import {drizzleAdapter} from "better-auth/adapters/drizzle"
 import db from "../database"
 import {admin, AdminOptions, username, UsernameOptions} from "better-auth/plugins";
 import * as schema from "../models/schema";
+import {ac, adminRole, defaultRole} from "./permissions";
 
 const adminOpts: AdminOptions = {
-
+    ac,
+    roles: {
+        defaultRole,
+        adminRole,
+    }
 } as AdminOptions;
 
 const usernameOpts: UsernameOptions = {
@@ -15,8 +20,7 @@ const usernameOpts: UsernameOptions = {
         return username.toLowerCase();
     },
     usernameValidator: (username) => {
-        return !(username === "admin" || username === "root");
-
+        return !(username === "admin" || username === "root") && /^[a-zA-Z0-9_-]+$/.test(username);
     },
     displayUsernameValidator: (displayUsername) => {
         // Allow only alphanumeric characters, underscores, and hyphens
