@@ -9,7 +9,11 @@
     "dev": "ts-node-dev src/index.ts",
     "transpile": "tsc",
     "emitTypes": "tsc --declaration --emitDeclarationOnly",
-    "build": "run-s transpile emitTypes"
+    "build": "run-s transpile emitTypes",
+    "db:generate_schema": "npx auth generate",
+    "db:generate_migration": "npx drizzle-kit generate",
+    "db:kit_migrate": "npx drizzle-kit migrate",
+    "db:migrate": "run-s db:generate_migration db:kit_migrate"
   },
   "author": "",
   "license": "ISC",
