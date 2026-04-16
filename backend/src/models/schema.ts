@@ -6,9 +6,13 @@ import {
     timestamp,
     boolean,
     index,
+    date, longtext, primaryKey
 } from "drizzle-orm/mysql-core";
 
-export const user = mysqlTable("user", {
+// We don't need a separate parent table, even though Nikolaos
+// added it, as we can just use the user's id and check roles
+// Parent role is part of access control config in permisions.ts
+ export const user = mysqlTable("user", {
     id: varchar("id", { length: 36 }).primaryKey(),
     name: varchar("name", { length: 255 }).notNull(),
     email: varchar("email", { length: 255 }).notNull().unique(),
@@ -87,6 +91,26 @@ export const verification = mysqlTable(
     (table) => [index("verification_identifier_idx").on(table.identifier)],
 );
 
+// Child is not an user that can log on, nor a role
+// A child is simply a data object in the database
+export const child = mysqlTable("child", {
+   id: varchar("id", { length: 36 }).primaryKey(),
+   first_name: varchar("name", { length: 255 }).notNull(),
+   last_name: varchar("last_name", { length: 255 }).notNull(),
+    date_of_birth: date().notNull(),
+    gender: varchar("gender", {length: 45}).notNull(),
+    medical_info: longtext("medical_info"),
+    },
+    (table) => [index("child_name_idx").on(table.first_name)],
+    (table) => [index("child_surname_idx").on(table.last_name)],
+);
+
+export const parentToChild = mysqlTable("parentToChild", {
+    parent_id: varchar("parent_id", { length: 36 }).references(() => user.id),
+    child_id: varchar("child_id", { length: 36 }).references(() => child.id),
+}, (t) => [primaryKey({columns: [t.parent_id, t.child_id]})]
+)
+
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
     accounts: many(account),
@@ -104,4 +128,15 @@ export const accountRelations = relations(account, ({ one }) => ({
         fields: [account.userId],
         references: [user.id],
     }),
+}));
+
+export const parentChildRelations = relations(parentToChild, ({one, many}) => ({
+    parent: many(user, {
+        fields: [parentToChild.parent_id],
+        references: [user.id],
+    }),
+    child: many(child, {
+        fields: [parentToChild.child_id],
+        references: [child.id],
+    })
 }));
