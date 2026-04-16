@@ -17,3 +17,7 @@ export const adminRole = ac.newRole(
         ...adminAc.statements
     }
 );
+
+export const parentRole = ac.newRole({
+
+});
