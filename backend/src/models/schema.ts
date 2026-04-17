@@ -105,11 +105,20 @@ export const child = mysqlTable("child", {
     (table) => [index("child_surname_idx").on(table.last_name)],
 );
 
+export const attendance = mysqlTable("attendance", {
+  id: varchar("id", { length: 36 }).primaryKey(),
+    check_in_time: timestamp("check_in_time", {fsp: 3}).notNull(),
+    check_out_time: timestamp("check_out_time", {fsp: 3}).notNull(),
+    status: boolean("status").notNull().default(false),
+    justification: longtext("justification"),
+    child_id: varchar("child_id", { length: 36 }).references(() => child.id),
+});
+
 export const parentToChild = mysqlTable("parentToChild", {
     parent_id: varchar("parent_id", { length: 36 }).references(() => user.id),
     child_id: varchar("child_id", { length: 36 }).references(() => child.id),
 }, (t) => [primaryKey({columns: [t.parent_id, t.child_id]})]
-)
+);
 
 export const userRelations = relations(user, ({ many }) => ({
     sessions: many(session),
