@@ -101,8 +101,7 @@ export const child = mysqlTable("child", {
     gender: varchar("gender", {length: 45}).notNull(),
     medical_info: longtext("medical_info"),
     },
-    (table) => [index("child_name_idx").on(table.first_name)],
-    (table) => [index("child_surname_idx").on(table.last_name)],
+    (table) => [index("child_name_idx").on(table.first_name), index("child_surname_idx").on(table.last_name)]
 );
 
 export const attendance = mysqlTable("attendance", {
@@ -139,12 +138,12 @@ export const accountRelations = relations(account, ({ one }) => ({
     }),
 }));
 
-export const parentChildRelations = relations(parentToChild, ({one, many}) => ({
-    parent: many(user, {
+export const parentChildRelations = relations(parentToChild, ({ one }) => ({
+    parent: one(user, {
         fields: [parentToChild.parent_id],
         references: [user.id],
     }),
-    child: many(child, {
+    child: one(child, {
         fields: [parentToChild.child_id],
         references: [child.id],
     })
