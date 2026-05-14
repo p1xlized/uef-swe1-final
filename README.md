@@ -1,9 +1,3 @@
-Since this is your **SWE 1 (Software Engineering 1) Final Project**, the README needs to be professional, clean, and provide clear "getting started" instructions for your professor or peers.
-
-Here is a structured template you can copy and paste.
-
----
-
 # KinderHUB – Kindergarten Management System
 
 KinderHUB is a full-stack platform designed to bridge the gap between teachers and parents. It allows for real-time attendance tracking, parent updates, and administrative oversight.
